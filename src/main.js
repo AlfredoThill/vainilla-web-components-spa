@@ -1,9 +1,11 @@
 import App from './components/app.js';
 import { AppHeader } from './components/layout';
+import { PokeList } from './components/pokemons';
 
 function registerComponents() {
   customElements.define('app-root', App);
   customElements.define('app-header', AppHeader);
+  customElements.define('poke-list', PokeList);
 }
 
 function bootstrap() {
