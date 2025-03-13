@@ -10,12 +10,11 @@ class PokeList extends HTMLElement {
     const templateContent = template.content;
     const shadowRoot = this.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(templateContent.cloneNode(true));
-
-    this.shadowRoot.querySelector('button.load-more').addEventListener('click', this.loadMore.bind(this));
-    this.shadowRoot.querySelector('button.clear').addEventListener('click', this.clear.bind(this));
   }
 
   connectedCallback() {
+    this.shadowRoot.querySelector('button.load-more').addEventListener('click', this.loadMore.bind(this));
+    this.shadowRoot.querySelector('button.clear').addEventListener('click', this.clear.bind(this));
     getPokemonList().then((pokemons) => {
       this.#pokemons = pokemons;
       this.render();
