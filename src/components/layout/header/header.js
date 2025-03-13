@@ -1,4 +1,4 @@
-import { routes } from './../../app.js';
+import { routes } from './../../routes.js';
 import { buildChangePageEvent } from './../../../events/navigation.js';
 
 class AppHeader extends HTMLElement {

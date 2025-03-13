@@ -1,5 +1,5 @@
 import { buildChangePageEvent } from '../../../events/navigation.js';
-import { routes } from '../../app.js';
+import { routes } from '../../routes.js';
 
 class PokeHome extends HTMLElement {
   constructor() {

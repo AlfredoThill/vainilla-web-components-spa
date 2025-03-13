@@ -1,4 +1,6 @@
 import { getPokemonList } from '../../../api/pokemon.api';
+import { buildChangePageEvent } from '../../../events/navigation';
+import { routes } from '../../routes';
 
 class PokeList extends HTMLElement {
   #pokemons = [];
@@ -15,6 +17,7 @@ class PokeList extends HTMLElement {
   connectedCallback() {
     this.shadowRoot.querySelector('button.load-more').addEventListener('click', this.loadMore.bind(this));
     this.shadowRoot.querySelector('button.clear').addEventListener('click', this.clear.bind(this));
+    this.shadowRoot.querySelector('ul').addEventListener('click', this.listClickListener.bind(this));
     getPokemonList().then((pokemons) => {
       this.#pokemons = pokemons;
       this.render();
@@ -34,10 +37,20 @@ class PokeList extends HTMLElement {
     ul.innerHTML = '';
   }
 
+  listClickListener(event) {
+    const entry = event.composedPath()[0];
+    if (entry.tagName === 'LI' && entry.hasAttribute('poke-url')) {
+      const id = entry.getAttribute('poke-url').split('/').filter(Boolean).pop();
+      document.dispatchEvent(buildChangePageEvent(routes['/pokemon/:id'].path, { id }));
+    }
+  }
+
   render(pokemons = this.#pokemons) {
     const ul = this.shadowRoot.querySelector('ul');
     const listItems = pokemons.map((pokemon) => {
       const li = document.createElement('li');
+      li.setAttribute('poke-id', pokemon.id);
+      li.setAttribute('poke-url', pokemon.url);
       li.textContent = pokemon.name;
       return li;
     });

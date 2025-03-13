@@ -26,3 +26,9 @@ ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
+
+li:hover {
+  background-color: grey;
+  color: blue;
+  cursor: pointer;
+}

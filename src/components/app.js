@@ -1,22 +1,5 @@
 import { navigationEvents } from '../events/navigation.js';
-
-export const routes = {
-  '/home': {
-    template: 'poke-home',
-    path: '/home',
-    title: 'Home',
-  },
-  '/pokemons': {
-    template: 'poke-list',
-    path: '/pokemons',
-    title: 'Pokemons',
-  },
-  '/about': {
-    template: 'about',
-    path: '/about',
-    title: 'About',
-  },
-};
+import { routes } from './routes.js';
 
 class App extends HTMLElement {
   singletonInstance;
@@ -41,13 +24,13 @@ class App extends HTMLElement {
     shadowRoot.appendChild(templateContent.cloneNode(true));
 
     this.changePageListener = (event) => {
-      this.handleChangePage(event.detail.page);
+      this.handleChangePage(event.detail);
     };
   }
 
   connectedCallback() {
     App.#activeRoute = routes[window.location.pathname] || routes['/home'];
-    this.handleChangePage(App.#activeRoute.path);
+    this.handleChangePage(App.#activeRoute);
     document.addEventListener(navigationEvents.changePage, this.changePageListener);
   }
 
@@ -55,14 +38,19 @@ class App extends HTMLElement {
     document.removeEventListener(navigationEvents.changePage, this.changePageListener);
   }
 
-  handleChangePage(path) {
+  handleChangePage({ path, data }) {
     if (!routes[path]) return;
     const activeTemplate = App.#activeRoute.template;
     this.shadowRoot.querySelector(activeTemplate)?.remove();
     App.#activeRoute = routes[path];
+    App.#activeRoute.data = data;
     this.shadowRoot.appendChild(document.createElement(App.#activeRoute.template));
-    // set browser url to active route
-    window.history.pushState({}, App.#activeRoute.title, App.#activeRoute.path);
+    window.history.pushState({}, App.#activeRoute.title, this.buildPath(App.#activeRoute.path, App.#activeRoute.data));
+  }
+
+  buildPath(path, data) {
+    if (!data) return path;
+    return path.replace(/:([^/]+)/g, (_, param) => data[param]);
   }
 }
 
