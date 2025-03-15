@@ -26,6 +26,7 @@ class App extends HTMLElement {
       this.handleChangePage(event.detail);
     };
   }
+
   connectedCallback() {
     App.#activeRoute = this.defineLocationRouting();
     this.handleChangePage(App.#activeRoute);
