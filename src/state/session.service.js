@@ -26,7 +26,7 @@ class SessionService {
     this.#email = null;
     this.#name = null;
     this.#loggedIn = false;
-    this.emitLoginEvent();
+    this.emitLogoutEvent();
   }
 
   emitLoginEvent() {
