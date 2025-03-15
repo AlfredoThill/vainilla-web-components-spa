@@ -1,0 +1,42 @@
+<template id="poke-edit-template">
+  <styles />
+  <h3>Poke Edit</h3>
+  <header>
+    <img id="image-front" />
+    <h4></h4>
+  </header>
+
+  <form>
+    <fieldset>
+      <legend>General</legend>
+      <label for="name">Name</label>
+      <input id="name" type="text" />
+
+      <label for="description">Description</label>
+      <input id="description" type="text" />
+    </fieldset>
+
+    <fieldset>
+      <legend>Base stats</legend>
+      <label for="hp">HP</label>
+      <input id="hp" type="number" />
+
+      <label for="attack">Attack</label>
+      <input id="attack" type="number" />
+
+      <label for="defense">Defense</label>
+      <input id="defense" type="number" />
+
+      <label for="special-attack">Special Attack</label>
+      <input id="special-attack" type="number" />
+
+      <label for="special-defense">Special Defense</label>
+      <input id="special-defense" type="number" />
+
+      <label for="speed">Speed</label>
+      <input id="speed" type="number" />
+    </fieldset>
+
+    <button type="submit">Save</button>
+  </form>
+</template>

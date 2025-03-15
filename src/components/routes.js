@@ -14,6 +14,11 @@ export const routes = {
     path: '/pokemon/:id',
     title: 'Pokemon Detail',
   },
+  '/pokemon/:id/edit': {
+    template: 'poke-edit',
+    path: '/pokemon/:id/edit',
+    title: 'Pokemon Edit',
+  },
   '/about': {
     template: 'about',
     path: '/about',
