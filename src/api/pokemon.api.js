@@ -8,4 +8,24 @@ function getPokemonDetails(id) {
   return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then((response) => response.json());
 }
 
-export { getPokemonList, getPokemonDetails };
+function getPokemonsByUser(email) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const pokemons = JSON.parse(localStorage.getItem(email)) || [];
+      resolve(pokemons);
+    }, 500);
+  });
+}
+
+function savePokemon(email, pokemon) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const pokemons = JSON.parse(localStorage.getItem(email)) || [];
+      pokemons.push(pokemon);
+      localStorage.setItem(email, JSON.stringify(pokemons));
+      resolve(pokemon);
+    }, 500);
+  });
+}
+
+export { getPokemonList, getPokemonDetails, getPokemonsByUser, savePokemon };

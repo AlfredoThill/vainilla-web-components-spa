@@ -1,16 +1,16 @@
-class PokeEdit extends HTMLElement {
-  static #tagName = 'poke-edit';
+class MyPokemons extends HTMLElement {
+  static #tagName = 'my-pokemons';
   static get tagName() {
-    return this.#tagName;
+    return MyPokemons.#tagName;
   }
 
   constructor() {
     super();
-    const template = document.getElementById('poke-edit-template');
+    const template = document.getElementById('my-pokemons-template');
     const templateContent = template.content;
     const shadowRoot = this.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(templateContent.cloneNode(true));
   }
 }
 
-export default PokeEdit;
+export default MyPokemons;

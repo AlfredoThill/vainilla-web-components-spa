@@ -3,6 +3,11 @@ import { buildChangePageEvent } from '../../../events/navigation';
 import { routes } from '../../routes';
 
 class PokeList extends HTMLElement {
+  static #tagName = 'poke-list';
+  static get tagName() {
+    return this.#tagName;
+  }
+
   #pokemons = [];
 
   constructor() {

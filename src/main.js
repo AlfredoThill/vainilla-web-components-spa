@@ -1,21 +1,22 @@
 import App from './components/app.js';
 import { AppHeader } from './components/layout';
 import AppLogin from './components/login/login.js';
-import { PokeList, PokeHome, PokeDetail, PokeEdit } from './components/pokemons';
+import { PokeList, PokeHome, MyPokemons, PokeDetail, PokeEdit } from './components/pokemons';
 
 import AdoptGlobalStyles from './components/common/adopt.global.style.js';
 
 function registerComponents() {
   customElements.define('app-root', App);
-  customElements.define('global-styles', AdoptGlobalStyles);
+  customElements.define(AdoptGlobalStyles.tagName, AdoptGlobalStyles);
 
-  customElements.define('app-header', AppHeader);
-  customElements.define('app-login', AppLogin);
+  customElements.define(AppHeader.tagName, AppHeader);
+  customElements.define(AppLogin.tagName, AppLogin);
 
-  customElements.define('poke-home', PokeHome);
-  customElements.define('poke-list', PokeList);
-  customElements.define('poke-detail', PokeDetail);
-  customElements.define('poke-edit', PokeEdit);
+  customElements.define(PokeHome.tagName, PokeHome);
+  customElements.define(MyPokemons.tagName, MyPokemons);
+  customElements.define(PokeList.tagName, PokeList);
+  customElements.define(PokeDetail.tagName, PokeDetail);
+  customElements.define(PokeEdit.tagName, PokeEdit);
 }
 
 function bootstrap() {

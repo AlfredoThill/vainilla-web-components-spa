@@ -2,6 +2,11 @@ import { buildChangePageEvent } from '../../../events/navigation.js';
 import { routes } from '../../routes.js';
 
 class PokeHome extends HTMLElement {
+  static #tagName = 'poke-home';
+  static get tagName() {
+    return this.#tagName;
+  }
+
   constructor() {
     super();
 

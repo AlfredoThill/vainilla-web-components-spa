@@ -1,7 +1,12 @@
 import { login } from './../../api/auth.api';
-import SessionService from './../../state/session.service.js';
+import SessionService from '../../services/session.service.js';
 
 class AppLogin extends HTMLElement {
+  static #tagName = 'app-login';
+  static get tagName() {
+    return this.#tagName;
+  }
+
   constructor() {
     super();
     const template = document.getElementById('login-template');

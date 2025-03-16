@@ -5,6 +5,10 @@ import { buildChangePageEvent } from '../../../events/navigation';
 import { routes } from '../../routes';
 
 class PokeDetails extends HTMLElement {
+  static #tagName = 'poke-detail';
+  static get tagName() {
+    return this.#tagName;
+  }
   #pokeId;
 
   constructor() {

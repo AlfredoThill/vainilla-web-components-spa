@@ -1,21 +1,23 @@
+import { PokeList, PokeHome, PokeDetail, PokeEdit } from './../components/pokemons';
+
 export const routes = {
   '/home': {
-    template: 'poke-home',
+    template: PokeHome.tagName,
     path: '/home',
     title: 'Home',
   },
   '/pokemons': {
-    template: 'poke-list',
+    template: PokeList.tagName,
     path: '/pokemons',
     title: 'Pokemons',
   },
   '/pokemon/:id': {
-    template: 'poke-detail',
+    template: PokeDetail.tagName,
     path: '/pokemon/:id',
     title: 'Pokemon Detail',
   },
   '/pokemon/:id/edit': {
-    template: 'poke-edit',
+    template: PokeEdit.tagName,
     path: '/pokemon/:id/edit',
     title: 'Pokemon Edit',
   },

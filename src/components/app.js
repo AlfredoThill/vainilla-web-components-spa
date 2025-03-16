@@ -5,6 +5,7 @@ class App extends HTMLElement {
   singletonInstance;
   static #activeRoute = '';
   changePageListener;
+  popStateListener;
 
   static get activeRoute() {
     return this.#activeRoute;
@@ -25,16 +26,21 @@ class App extends HTMLElement {
     this.changePageListener = (event) => {
       this.handleChangePage(event.detail);
     };
+    this.popStateListener = (event) => {
+      this.handlePopState(event);
+    };
   }
 
   connectedCallback() {
     App.#activeRoute = this.defineLocationRouting();
     this.handleChangePage(App.#activeRoute);
     document.addEventListener(navigationEvents.changePage, this.changePageListener);
+    window.addEventListener('popstate', this.popStateListener);
   }
 
   disconnectedCallback() {
     document.removeEventListener(navigationEvents.changePage, this.changePageListener);
+    window.removeEventListener('popstate', this.popStateListener);
   }
 
   handleChangePage({ path, data }) {
@@ -45,6 +51,10 @@ class App extends HTMLElement {
     App.#activeRoute.data = data;
     this.shadowRoot.appendChild(document.createElement(App.#activeRoute.template));
     window.history.pushState({}, App.#activeRoute.title, this.buildPath(App.#activeRoute.path, App.#activeRoute.data));
+  }
+
+  handlePopState(event) {
+    this.handleChangePage(this.defineLocationRouting());
   }
 
   buildPath(path, data) {

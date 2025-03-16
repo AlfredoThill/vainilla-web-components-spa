@@ -1,4 +1,9 @@
 export class AdoptGlobalStyles extends HTMLElement {
+  static #tagName = 'global-styles';
+  static get tagName() {
+    return this.#tagName;
+  }
+
   connectedCallback() {
     addGlobalStylesToShadowRoot(this.getRootNode());
     this.remove();
