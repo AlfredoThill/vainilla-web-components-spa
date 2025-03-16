@@ -1,6 +1,5 @@
 import { routes } from './../../routes.js';
 import { buildChangePageEvent } from './../../../events/navigation.js';
-import { sessionEvents } from '../../../events/session.js';
 import SessionService from '../../../services/session.service.js';
 
 class AppHeader extends HTMLElement {
@@ -9,8 +8,8 @@ class AppHeader extends HTMLElement {
     return this.#tagName;
   }
 
-  loginListener;
-  logoutListener;
+  loginSubscription;
+  logoutSubscription;
 
   constructor() {
     super();
@@ -20,20 +19,20 @@ class AppHeader extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(templateContent.cloneNode(true));
 
-    this.loginListener = (_) => this.render();
-    this.logoutListener = (_) => this.render();
+    this.loginSubscription = (_) => this.render();
+    this.logoutSubscription = (_) => this.render();
   }
 
   connectedCallback() {
     this.shadowRoot.getElementById('home-anchor').addEventListener('click', (event) => this.goHome(event));
     this.render();
-    document.addEventListener(sessionEvents.login, this.loginListener);
-    document.addEventListener(sessionEvents.logout, this.logoutListener);
+    SessionService.subscribeToLogin(this.loginSubscription);
+    SessionService.subscribeToLogout(this.logoutSubscription);
   }
 
   disconnectedCallback() {
-    document.removeEventListener(sessionEvents.login, this.loginListener);
-    document.removeEventListener(sessionEvents.logout, this.logoutListener);
+    SessionService.desubscribeFromLogin(this.loginSubscription);
+    SessionService.desubscribeFromLogout(this.logoutSubscription);
   }
 
   goHome(event) {

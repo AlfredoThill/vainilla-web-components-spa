@@ -1,11 +1,48 @@
-import { buildLoginEvent, buildLogoutEvent } from '../events/session.js';
+import { buildLoginEvent, buildLogoutEvent, sessionEvents } from '../events/session.js';
 
 class SessionService {
   #loggedIn = false;
   #email;
   #name;
 
-  constructor() {}
+  #logInSideEffects = [];
+  #logOutSideEffects = [];
+
+  constructor() {
+    document.addEventListener(sessionEvents.login, (event) => {
+      for (let sideEffect of this.#logInSideEffects) {
+        try {
+          sideEffect(event);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+
+    document.addEventListener(sessionEvents.logout, () => {
+      for (let sideEffect of this.#logOutSideEffects) {
+        try {
+          sideEffect();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
+
+  subscribeToLogin(sideEffect) {
+    this.#logInSideEffects.push(sideEffect);
+  }
+  desubscribeFromLogin(sideEffect) {
+    this.#logInSideEffects = this.#logInSideEffects.filter((se) => se !== sideEffect);
+  }
+
+  subscribeToLogout(sideEffect) {
+    this.#logOutSideEffects.push(sideEffect);
+  }
+  desubscribeFromLogout(sideEffect) {
+    this.#logOutSideEffects = this.#logOutSideEffects.filter((se) => se !== sideEffect);
+  }
 
   get loggedIn() {
     return this.#loggedIn;
