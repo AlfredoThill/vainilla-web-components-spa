@@ -1,4 +1,5 @@
 import PokemonService from '../../../../services/pokemon.sevice';
+import { createSlot } from '../../../../utils/slot';
 
 import MyPokemonCard from './card/card';
 
@@ -7,6 +8,7 @@ class MyPokemons extends HTMLElement {
   static get tagName() {
     return MyPokemons.#tagName;
   }
+  #gridSlot;
 
   constructor() {
     super();
@@ -21,12 +23,16 @@ class MyPokemons extends HTMLElement {
   }
 
   render() {
-    const grid = this.shadowRoot.querySelector('section');
+    this.#gridSlot?.remove();
+    const slot = createSlot('poke-grid', 'section');
+    slot.classList.add('card_grid');
     PokemonService.currentUserPokemons.forEach((pokemon) => {
       const card = document.createElement(MyPokemonCard.tagName);
       card.setAttribute('data-pokemon-id', pokemon.id);
-      grid.appendChild(card);
+      slot.appendChild(card);
     });
+    this.#gridSlot = slot;
+    this.appendChild(slot);
   }
 }
 

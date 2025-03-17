@@ -3,6 +3,8 @@ import SessionService from '../../../services/session.service.js';
 import NavigationService from '../../../services/navigation.service.js';
 import PokemonService from '../../../services/pokemon.sevice.js';
 
+import { createSlot } from '../../../utils/slot.js';
+
 import MyPokemons from './mypokemons/mypokemons.js';
 
 class PokeHome extends HTMLElement {
@@ -10,6 +12,7 @@ class PokeHome extends HTMLElement {
   static get tagName() {
     return this.#tagName;
   }
+  #myPokemonsSlot;
 
   loginSubscription;
   logoutSubscription;
@@ -43,17 +46,19 @@ class PokeHome extends HTMLElement {
   }
 
   render() {
-    const section = this.shadowRoot.getElementById('my-pokemons');
-    section.childNodes?.forEach((child) => child.remove());
+    this.#myPokemonsSlot?.remove();
+    let slot;
     if (SessionService.loggedIn) {
+      slot = createSlot('my-pokemons', 'section');
       PokemonService.getCurrentUserPokemons().then(() => {
-        section.appendChild(document.createElement(MyPokemons.tagName));
+        slot.appendChild(document.createElement(MyPokemons.tagName));
       });
     } else {
-      const p = document.createElement('p');
-      p.textContent = 'Login to see your custom pokemons';
-      section.appendChild(p);
+      slot = createSlot('my-pokemons', 'p');
+      slot.textContent = 'Login to see your custom pokemons';
     }
+    this.#myPokemonsSlot = slot;
+    this.appendChild(slot);
   }
 }
 

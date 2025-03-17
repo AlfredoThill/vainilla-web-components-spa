@@ -66,7 +66,7 @@ class AppHeader extends HTMLElement {
 
   render() {
     this.#sessionSlot?.remove();
-    const slot = createSlot('session-slot');
+    const slot = createSlot('session-slot', 'a');
     if (SessionService.loggedIn) {
       slot.textContent = `${SessionService.getSessionData().name} | Logout`;
       slot.addEventListener('click', (event) => this.handleLogoutClick(event));

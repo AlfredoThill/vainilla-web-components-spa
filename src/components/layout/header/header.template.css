@@ -17,7 +17,8 @@ header section {
   align-items: center;
 }
 
-a {
+a,
+::slotted(a) {
   color: darkblue;
   cursor: pointer;
   text-decoration: none;
@@ -27,12 +28,14 @@ a {
   margin: 5px;
 }
 
-a.active {
+a.active,
+::slotted(a.active) {
   background-color: darkblue;
   color: white;
 }
 
-a:hover {
+a:hover,
+::slotted(a:hover) {
   background-color: darkblue;
   color: white;
 }
