@@ -1,6 +1,8 @@
 import { routes } from './../../routes.js';
-import { buildChangePageEvent } from './../../../events/navigation.js';
 import SessionService from '../../../services/session.service.js';
+import NavigationService from '../../../services/navigation.service.js';
+
+import AppLogin from '../../login/login.js';
 
 class AppHeader extends HTMLElement {
   static #tagName = 'app-header';
@@ -8,8 +10,21 @@ class AppHeader extends HTMLElement {
     return this.#tagName;
   }
 
+  #idsMap = {
+    home: 'home-anchor',
+    pokemons: 'pokemons-anchor',
+    about: 'about-anchor',
+  };
+
+  #routeToAnchorMap = {
+    [routes['/home'].path]: this.#idsMap.home,
+    [routes['/pokemons'].path]: this.#idsMap.pokemons,
+    [routes['/about'].path]: this.#idsMap.about,
+  };
+
   loginSubscription;
   logoutSubscription;
+  changePageSubscription;
 
   constructor() {
     super();
@@ -21,33 +36,52 @@ class AppHeader extends HTMLElement {
 
     this.loginSubscription = (_) => this.render();
     this.logoutSubscription = (_) => this.render();
+    this.changePageSubscription = (_) => this.setActiveLink();
   }
 
   connectedCallback() {
-    this.shadowRoot.getElementById('home-anchor').addEventListener('click', (event) => this.goHome(event));
+    this.shadowRoot.getElementById(this.#idsMap.home).addEventListener('click', (event) => this.handleHomeClick(event));
+    this.shadowRoot
+      .getElementById(this.#idsMap.pokemons)
+      .addEventListener('click', (event) => this.handlePokemonListClick(event));
+
     this.render();
+
     SessionService.subscribeToLogin(this.loginSubscription);
     SessionService.subscribeToLogout(this.logoutSubscription);
+    NavigationService.subscribeToChangePage(this.changePageSubscription);
   }
 
   disconnectedCallback() {
     SessionService.desubscribeFromLogin(this.loginSubscription);
     SessionService.desubscribeFromLogout(this.logoutSubscription);
+    NavigationService.desubscribeFromChangePage(this.changePageSubscription);
   }
 
-  goHome(event) {
+  handleHomeClick(event) {
     event.preventDefault();
-    document.dispatchEvent(buildChangePageEvent(routes['/home'].path));
+    NavigationService.emitChangePageEvent(routes['/home'].path);
+  }
+
+  handlePokemonListClick(event) {
+    event.preventDefault();
+    NavigationService.emitChangePageEvent(routes['/pokemons'].path);
   }
 
   handleLoginClick(event) {
     event.preventDefault();
-    document.body.appendChild(document.createElement('app-login'));
+    document.body.appendChild(document.createElement(AppLogin.tagName));
   }
 
   handleLogoutClick(event) {
     event.preventDefault();
-    SessionService.clearSessionData();
+    SessionService.emitLogoutEvent();
+  }
+
+  setActiveLink() {
+    this.shadowRoot.querySelector('a.active')?.classList.remove('active');
+    const activeAnchorId = this.#routeToAnchorMap[NavigationService.activeRoute.path];
+    activeAnchorId && this.shadowRoot.getElementById(activeAnchorId).classList.add('active');
   }
 
   render() {

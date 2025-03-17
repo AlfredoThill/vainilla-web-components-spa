@@ -1,6 +1,7 @@
-import { buildChangePageEvent } from '../../../events/navigation.js';
 import { routes } from '../../routes.js';
 import SessionService from '../../../services/session.service.js';
+import NavigationService from '../../../services/navigation.service.js';
+
 import MyPokemons from './mypokemons/mypokemons.js';
 
 class PokeHome extends HTMLElement {
@@ -37,7 +38,7 @@ class PokeHome extends HTMLElement {
   }
 
   goToPokemonList() {
-    document.dispatchEvent(buildChangePageEvent(routes['/pokemons'].path));
+    NavigationService.emitChangePageEvent(routes['/pokemons'].path);
   }
 
   render() {

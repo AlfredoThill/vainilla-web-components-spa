@@ -48,29 +48,29 @@ class SessionService {
     return this.#loggedIn;
   }
 
-  setSessionData({ email, name }) {
+  #setSessionData({ email, name }) {
     this.#email = email;
     this.#name = name;
     this.#loggedIn = true;
-    this.emitLoginEvent();
   }
 
   getSessionData() {
     return { email: this.#email, name: this.#name };
   }
 
-  clearSessionData() {
+  #clearSessionData() {
     this.#email = null;
     this.#name = null;
     this.#loggedIn = false;
-    this.emitLogoutEvent();
   }
 
-  emitLoginEvent() {
+  emitLoginEvent({ email, name }) {
+    this.#setSessionData({ email, name });
     document.dispatchEvent(buildLoginEvent(this.getSessionData()));
   }
 
   emitLogoutEvent() {
+    this.#clearSessionData();
     document.dispatchEvent(buildLogoutEvent());
   }
 }

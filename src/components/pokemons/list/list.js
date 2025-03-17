@@ -1,6 +1,7 @@
 import { getPokemonList } from '../../../api/pokemon.api';
-import { buildChangePageEvent } from '../../../events/navigation';
+
 import { routes } from '../../routes';
+import NavigationService from '../../../services/navigation.service';
 
 class PokeList extends HTMLElement {
   static #tagName = 'poke-list';
@@ -46,7 +47,7 @@ class PokeList extends HTMLElement {
     const entry = event.composedPath()[0];
     if (entry.tagName === 'LI' && entry.hasAttribute('poke-url')) {
       const id = entry.getAttribute('poke-url').split('/').filter(Boolean).pop();
-      document.dispatchEvent(buildChangePageEvent(routes['/pokemon/:id'].path, { id }));
+      NavigationService.emitChangePageEvent(routes['/pokemon/:id'].path, { id });
     }
   }
 

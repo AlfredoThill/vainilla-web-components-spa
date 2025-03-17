@@ -1,8 +1,7 @@
-import App from '../../app';
 import { getPokemonDetails } from '../../../api/pokemon.api';
 
-import { buildChangePageEvent } from '../../../events/navigation';
 import { routes } from '../../routes';
+import NavigationService from '../../../services/navigation.service';
 
 class PokeDetails extends HTMLElement {
   static #tagName = 'poke-detail';
@@ -20,9 +19,9 @@ class PokeDetails extends HTMLElement {
   }
 
   connectedCallback() {
-    if (App.activeRoute?.data?.id) {
-      this.#pokeId = App.activeRoute.data.id;
-      getPokemonDetails(App.activeRoute.data.id).then((pokemon) => {
+    if (NavigationService.activeRoute?.data?.id) {
+      this.#pokeId = NavigationService.activeRoute.data.id;
+      getPokemonDetails(NavigationService.activeRoute.data.id).then((pokemon) => {
         this.populateHeader(pokemon);
         this.populateStats(pokemon);
         this.shadowRoot.getElementById('edit').addEventListener('click', this.editClickListener.bind(this));
@@ -47,7 +46,7 @@ class PokeDetails extends HTMLElement {
   }
 
   editClickListener() {
-    document.dispatchEvent(buildChangePageEvent(routes['/pokemon/:id/edit'].path, { id: this.#pokeId }));
+    NavigationService.emitChangePageEvent(routes['/pokemon/:id/edit'].path, { id: this.#pokeId });
   }
 }
 

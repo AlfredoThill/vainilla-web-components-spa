@@ -25,7 +25,7 @@ class AppLogin extends HTMLElement {
     const data = new FormData(event.target);
     const { email, password } = Object.fromEntries(data);
     login(email, password).then((response) => {
-      SessionService.setSessionData(response);
+      SessionService.emitLoginEvent({ email: response.email, name: response.name });
       this.remove();
     });
   }
