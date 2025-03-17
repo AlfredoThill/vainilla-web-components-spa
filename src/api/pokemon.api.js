@@ -28,4 +28,22 @@ function savePokemon(email, pokemon) {
   });
 }
 
+(function () {
+  const pokemons = [
+    {
+      id: 'GK74I',
+      name: 'Bulbasaur',
+      description: 'This is my custom bulbasaur',
+      stats: { hp: 45, attack: 49, defense: 49, speed: 45, specialAttack: 22, specialDefence: 54 },
+    },
+    {
+      id: 'GK74K',
+      name: 'Charmander',
+      description: 'This is my custom charmander',
+      stats: { hp: 39, attack: 52, defense: 43, speed: 65, specialAttack: 60, specialDefence: 50 },
+    },
+  ];
+  localStorage.setItem('alfredothill@gmail.com', JSON.stringify(pokemons));
+})();
+
 export { getPokemonList, getPokemonDetails, getPokemonsByUser, savePokemon };

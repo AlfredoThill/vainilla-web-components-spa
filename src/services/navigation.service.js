@@ -38,6 +38,7 @@ class NavigationService {
       console.warn(`Route ${path} not found`);
       return;
     }
+    if (this.#activeRoute?.path === path) return;
     this.#activeRoute = { ...routes[path], data };
     document.dispatchEvent(buildChangePageEvent(path, data));
     window.history.pushState(

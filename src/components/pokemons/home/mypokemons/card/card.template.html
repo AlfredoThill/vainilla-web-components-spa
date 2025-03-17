@@ -1,0 +1,19 @@
+<template id="my-pokemon-card-template">
+  <styles />
+  <section class="card">
+    <div class="card_header">
+      <h5>Pokemon Name:<slot name="name">default</slot></h5>
+      <p>Description: <slot name="description">default</slot></p>
+    </div>
+    <div class="card_body">
+      <ul>
+        <li>HP: <slot name="hp">default</slot></li>
+        <li>Attack: <slot name="attack">default</slot></li>
+        <li>Defense: <slot name="defense">default</slot></li>
+        <li>Special Attack: <slot name="special-attack">default</slot></li>
+        <li>Special Defense: <slot name="special-defense">default</slot></li>
+        <li>Speed: <slot name="speed">default</slot></li>
+      </ul>
+    </div>
+  </section>
+</template>

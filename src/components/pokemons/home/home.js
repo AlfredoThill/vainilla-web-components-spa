@@ -1,6 +1,7 @@
 import { routes } from '../../routes.js';
 import SessionService from '../../../services/session.service.js';
 import NavigationService from '../../../services/navigation.service.js';
+import PokemonService from '../../../services/pokemon.sevice.js';
 
 import MyPokemons from './mypokemons/mypokemons.js';
 
@@ -45,7 +46,9 @@ class PokeHome extends HTMLElement {
     const section = this.shadowRoot.getElementById('my-pokemons');
     section.childNodes?.forEach((child) => child.remove());
     if (SessionService.loggedIn) {
-      section.appendChild(document.createElement(MyPokemons.tagName));
+      PokemonService.getCurrentUserPokemons().then(() => {
+        section.appendChild(document.createElement(MyPokemons.tagName));
+      });
     } else {
       const p = document.createElement('p');
       p.textContent = 'Login to see your custom pokemons';
