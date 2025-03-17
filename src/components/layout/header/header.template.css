@@ -19,6 +19,7 @@ header section {
 
 a {
   color: darkblue;
+  cursor: pointer;
   text-decoration: none;
   border: 1px solid darkblue;
   border-radius: 5px;

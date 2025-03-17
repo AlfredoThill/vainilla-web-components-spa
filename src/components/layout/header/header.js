@@ -2,6 +2,8 @@ import { routes } from './../../routes.js';
 import SessionService from '../../../services/session.service.js';
 import NavigationService from '../../../services/navigation.service.js';
 
+import { createSlot } from '../../../utils/slot.js';
+
 import AppLogin from '../../login/login.js';
 
 class AppHeader extends HTMLElement {
@@ -9,6 +11,7 @@ class AppHeader extends HTMLElement {
   static get tagName() {
     return this.#tagName;
   }
+  #sessionSlot;
 
   loginSubscription;
   logoutSubscription;
@@ -62,19 +65,17 @@ class AppHeader extends HTMLElement {
   }
 
   render() {
-    const section = this.shadowRoot.getElementById('session-section');
-    section.querySelector('a')?.remove();
+    this.#sessionSlot?.remove();
+    const slot = createSlot('session-slot');
     if (SessionService.loggedIn) {
-      const logoutAnchor = document.createElement('a');
-      logoutAnchor.textContent = `${SessionService.getSessionData().name} | Logout`;
-      logoutAnchor.addEventListener('click', (event) => this.handleLogoutClick(event));
-      section.appendChild(logoutAnchor);
+      slot.textContent = `${SessionService.getSessionData().name} | Logout`;
+      slot.addEventListener('click', (event) => this.handleLogoutClick(event));
     } else {
-      const loginAnchor = document.createElement('a');
-      loginAnchor.textContent = 'Login';
-      loginAnchor.addEventListener('click', (event) => this.handleLoginClick(event));
-      section.appendChild(loginAnchor);
+      slot.textContent = 'Login';
+      slot.addEventListener('click', (event) => this.handleLoginClick(event));
     }
+    this.#sessionSlot = slot;
+    this.appendChild(slot);
   }
 }
 
