@@ -2,6 +2,7 @@ import App from './components/app.js';
 import { AppHeader } from './components/layout';
 import AppLogin from './components/login/login.js';
 import { PokeList, PokeHome, MyPokemons, MyPokemonCard, PokeDetail, PokeEdit } from './components/pokemons';
+import { AppNav } from './components/common';
 
 import AdoptGlobalStyles from './components/common/adopt.global.style.js';
 
@@ -18,6 +19,8 @@ function registerComponents() {
   customElements.define(PokeList.tagName, PokeList);
   customElements.define(PokeDetail.tagName, PokeDetail);
   customElements.define(PokeEdit.tagName, PokeEdit);
+
+  customElements.define(AppNav.tagName, AppNav, { extends: 'a' });
 }
 
 function bootstrap() {

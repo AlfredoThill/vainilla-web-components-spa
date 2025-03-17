@@ -10,18 +10,6 @@ class AppHeader extends HTMLElement {
     return this.#tagName;
   }
 
-  #idsMap = {
-    home: 'home-anchor',
-    pokemons: 'pokemons-anchor',
-    about: 'about-anchor',
-  };
-
-  #routeToAnchorMap = {
-    [routes['/home'].path]: this.#idsMap.home,
-    [routes['/pokemons'].path]: this.#idsMap.pokemons,
-    [routes['/about'].path]: this.#idsMap.about,
-  };
-
   loginSubscription;
   logoutSubscription;
   changePageSubscription;
@@ -40,11 +28,6 @@ class AppHeader extends HTMLElement {
   }
 
   connectedCallback() {
-    this.shadowRoot.getElementById(this.#idsMap.home).addEventListener('click', (event) => this.handleHomeClick(event));
-    this.shadowRoot
-      .getElementById(this.#idsMap.pokemons)
-      .addEventListener('click', (event) => this.handlePokemonListClick(event));
-
     this.render();
 
     SessionService.subscribeToLogin(this.loginSubscription);
@@ -56,11 +39,6 @@ class AppHeader extends HTMLElement {
     SessionService.desubscribeFromLogin(this.loginSubscription);
     SessionService.desubscribeFromLogout(this.logoutSubscription);
     NavigationService.desubscribeFromChangePage(this.changePageSubscription);
-  }
-
-  handleHomeClick(event) {
-    event.preventDefault();
-    NavigationService.emitChangePageEvent(routes['/home'].path);
   }
 
   handlePokemonListClick(event) {
@@ -79,9 +57,8 @@ class AppHeader extends HTMLElement {
   }
 
   setActiveLink() {
-    this.shadowRoot.querySelector('a.active')?.classList.remove('active');
-    const activeAnchorId = this.#routeToAnchorMap[NavigationService.activeRoute.path];
-    activeAnchorId && this.shadowRoot.getElementById(activeAnchorId).classList.add('active');
+    this.shadowRoot.querySelector('a[active]')?.removeAttribute('active');
+    this.shadowRoot.querySelector(`a[path="${NavigationService.activeRoute.path}"]`)?.setAttribute('active', '');
   }
 
   render() {

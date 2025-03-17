@@ -30,3 +30,8 @@ a.active {
   background-color: darkblue;
   color: white;
 }
+
+a:hover {
+  background-color: darkblue;
+  color: white;
+}
